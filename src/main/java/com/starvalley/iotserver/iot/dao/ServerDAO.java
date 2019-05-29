@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServerDAO {
@@ -21,8 +22,12 @@ public class ServerDAO {
         return serverRepository.findAll();
     }
 
-    public Server find(Long id){
-        return serverRepository.findById(id)
+    public Optional<Server> find(Long id){
+        return serverRepository.findById(id);
+    }
+
+    public Server <Server> findOne(Long id){
+        return serverRepository.findOne(id)
     }
 
     public void delete(Server server){

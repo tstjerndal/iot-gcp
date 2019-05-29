@@ -1,11 +1,9 @@
 package com.starvalley.iotserver.iot.entity;
 
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -19,6 +17,9 @@ public class Server {
     @NotBlank
     String name;
     String description;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     @NotBlank
     Date createdAt;
 
