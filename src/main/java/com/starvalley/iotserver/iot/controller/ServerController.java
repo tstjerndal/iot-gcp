@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/server")
@@ -38,16 +39,17 @@ public class ServerController {
 
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Server> updateServer(@PathVariable (value = "id") Long serverId, @Valid @RequestBody Server serverUpdate){
-        Server server = serverDAO.find(serverId);
+    public ResponseEntity<Server> updateServer(@PathVariable (value = "id") Long serverId, @Valid @RequestBody Server servernewValues){
+        Optional<Server> server = serverDAO.find(serverId);
         if (server == null){
             return ResponseEntity.notFound().build();
         } else {
-            server.setName(serverUpdate.getName());
-            server.setDescription(serverUpdate.getDescription());
+            Server updateServer = server.get();
+            updateServer.setName(servernewValues.getName());
+            updateServer.setDescription(servernewValues.getDescription());
 
-            serverDAO.save(server);
-            return ResponseEntity.ok().body(server);
+            serverDAO.save(updateServer);
+            return ResponseEntity.ok().body(updateServer);
         }
     }
 
