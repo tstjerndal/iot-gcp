@@ -1,5 +1,6 @@
-package com.starvalley.iotserver.iot.entity;
+package com.starvalley.iotserver.iot.dao;
 
+import com.starvalley.iotserver.iot.entity.Server;
 import com.starvalley.iotserver.iot.repository.ServerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
