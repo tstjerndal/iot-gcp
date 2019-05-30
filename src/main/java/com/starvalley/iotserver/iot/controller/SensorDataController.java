@@ -1,5 +1,6 @@
 package com.starvalley.iotserver.iot.controller;
 
+import com.starvalley.iotserver.iot.dao.SensorDataDAO;
 import com.starvalley.iotserver.iot.entity.Sensor;
 import com.starvalley.iotserver.iot.entity.SensorData;
 import com.starvalley.iotserver.iot.repository.SensorDataRepository;
@@ -9,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,49 +23,55 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/{name}/sensorData")
 class SensorDataController {
-    private final SensorRepository sensorRepository;
-    private final SensorDataRepository sensorDataRepository;
-
-
     @Autowired
-    SensorDataController(SensorDataRepository sensorDataRepository,SensorRepository sensorRepository) {
-        this.sensorDataRepository = sensorDataRepository;
-        this.sensorRepository = sensorRepository;
+    SensorDataDAO sensorDataDAO;
+
+    @PostMapping("/")
+    public SensorData createSensorData(@Valid @RequestBody SensorData sensorData){
+        return sensorDataDAO.save(sensorData);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    Collection<SensorData> readSensor(@PathVariable String name) throws Exception {
-        this.validateSensor(name);
-        return this.sensorDataRepository.findBySensorName(name);
+    @GetMapping("")
+    public List<SensorData> getAllSensorDatas (){
+        return sensorDataDAO.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> add(@PathVariable String name, @RequestBody Sensor input) throws Exception {
-        this.validateSensor(name);
+    @GetMapping("{/id}")
+    public ResponseEntity<SensorData> getSensorDataById (@PathVariable(value = "id") Long sensorDataId){
+        Optional optionalSensorData = sensorDataDAO.findOne(sensorDataId);
 
-        return this.sensorRepository.findByName(name).map(sensor -> {
-            SensorData result = sensorDataRepository.save(new SensorData(sensor,new Date(), input.getId()));
-
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
-
-            return ResponseEntity.created(location).build();
-        })
-                .orElse(ResponseEntity.noContent().build());
+        if (!optionalSensorData.isPresent()){
+            return ResponseEntity.notFound().build();
+        } else {
+            SensorData sensorData = (SensorData) optionalSensorData.get();
+            return ResponseEntity.ok(sensorData);
+        }
 
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<SensorData> updateSensorData(@PathVariable (value = "id") Long sensorDataId, @Valid @RequestBody SensorData sensorDatanewValues){
+        Optional<SensorData> sensorData = sensorDataDAO.find(sensorDataId);
+        if (sensorData == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            SensorData updateSensorData = sensorData.get();
+            updateSensorData.setValue(sensorDatanewValues.getValue());
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{sensorDataId}")
-    Optional<SensorData> readSensorData(@PathVariable String name, @PathVariable Long sensorDataId) throws Exception {
-        this.validateSensor(name);
-
-        Optional<SensorData> sensorData = this.sensorDataRepository.findById(sensorDataId);
-        if (sensorData.isPresent()) {
-            return sensorData;
-        } else return null;
+            sensorDataDAO.save(updateSensorData);
+            return ResponseEntity.ok().body(updateSensorData);
+        }
     }
 
-    private void validateSensor(String sensorName) throws Exception {
-        this.sensorRepository.findByName(sensorName).orElseThrow(
-                () -> new Exception("Error finding sensro"+sensorName));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SensorData> deleteSensorData (@PathVariable  (value = "id") Long sensorDataId){
+        Optional optionalSensorData = sensorDataDAO.findOne(sensorDataId);
+
+        if (!optionalSensorData.isPresent()){
+            return ResponseEntity.notFound().build();
+        } else {
+            SensorData sensorData = (SensorData) optionalSensorData.get();
+            sensorDataDAO.delete(sensorData);
+            return ResponseEntity.ok().build();
+        }
     }
 }

@@ -1,8 +1,10 @@
 package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -21,15 +23,12 @@ public class SensorData {
     private Sensor sensor;
 
     private Long value;
-    private Date date;
 
-    private SensorData() { } // JPA only
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    @NotBlank
+    Date createdAt;
 
-    public SensorData(final Sensor sensor, final Date date, final Long value) {
-        this.value = value;
-        this.date = date;
-        this.sensor = sensor;
-    }
 
     public Long getId() {
         return Id;
@@ -47,12 +46,12 @@ public class SensorData {
         this.value = value;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreatedAt(Date date) {
+        this.createdAt = createdAt;
     }
 
     public Sensor getSensor() {

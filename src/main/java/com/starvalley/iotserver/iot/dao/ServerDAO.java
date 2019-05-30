@@ -27,7 +27,7 @@ public class ServerDAO {
     }
 
     public Optional<Server> findOne(Long id){
-        return serverRepository.findById(id);
+        return serverRepository.findOne(id);
     }
 
     public void delete(Server server){

@@ -4,42 +4,53 @@
 package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-
+@EntityListeners(AuditingEntityListener.class)
 public class Sensor {
     @Id
     @GeneratedValue
     private Long id;
 
+    @NotBlank
     private String code;
-
+    @NotBlank
     private String name;
 
-    private String serveName;
+    private String description;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    @NotBlank
+    Date createdAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "sensor")
     private Set<SensorData> sensorDatas = new HashSet<>();
 
-    private Sensor() { } // JPA only
-
-    public Sensor(final String name, final String code, final String serveName) {
-        this.name = name;
-        this.code = code;
-        this.serveName = serveName;
+    public String getDescription() {
+        return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -69,11 +80,4 @@ public class Sensor {
         this.sensorDatas = sensorDatas;
     }
 
-    public String getServeName() {
-        return serveName;
-    }
-
-    public void setServeName(String serveName) {
-        this.serveName = serveName;
-    }
 }
