@@ -1,4 +1,4 @@
-package com.starvalley.iotserver.iot.dao;
+package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +17,7 @@ import java.util.Date;
         allowGetters = true
 )
 public abstract class AuditModel implements Serializable {
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

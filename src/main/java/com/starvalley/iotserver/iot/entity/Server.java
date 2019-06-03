@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-public class Server {
+public class Server extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

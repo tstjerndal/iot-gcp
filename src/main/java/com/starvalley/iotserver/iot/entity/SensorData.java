@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 
-public class SensorData {
+public class SensorData extends AuditModel {
     @Id
     @GeneratedValue
     private Long Id;
