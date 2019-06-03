@@ -29,7 +29,7 @@ public class ServerController {
 
     @GetMapping("{/id}")
     public ResponseEntity<Server> getServerById (@PathVariable(value = "id") Long serverId){
-        Optional optionalServer = serverDAO.findOne(serverId);
+        Optional optionalServer = serverDAO.findById(serverId);
 
         if (!optionalServer.isPresent()){
             return ResponseEntity.notFound().build();
@@ -56,7 +56,7 @@ public class ServerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Server> deleteServer (@PathVariable  (value = "id") Long serverId){
-        Optional optionalServer = serverDAO.findOne(serverId);
+        Optional optionalServer = serverDAO.findById(serverId);
 
         if (!optionalServer.isPresent()){
             return ResponseEntity.notFound().build();

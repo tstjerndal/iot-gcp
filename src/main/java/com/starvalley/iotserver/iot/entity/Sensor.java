@@ -4,6 +4,7 @@
 package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.starvalley.iotserver.iot.dao.AuditModel;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,8 +15,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@EntityListeners(AuditingEntityListener.class)
-public class Sensor {
+@Entity
+public class Sensor extends AuditModel {
     @Id
     @GeneratedValue
     private Long id;
@@ -27,11 +28,6 @@ public class Sensor {
 
     private String description;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    @NotBlank
-    Date createdAt;
-
     @JsonIgnore
     @OneToMany(mappedBy = "sensor")
     private Set<SensorData> sensorDatas = new HashSet<>();
@@ -42,14 +38,6 @@ public class Sensor {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Long getId() {

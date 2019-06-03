@@ -27,8 +27,8 @@ public class SensorDataDAO {
         return sensorDataRepository.findById(id);
     }
 
-    public Optional<SensorData> findOne(Long id){
-        return sensorDataRepository.findOne(id);
+    public Optional<SensorData> findById(Long id){
+        return sensorDataRepository.findById(id);
     }
 
     public void delete(SensorData sensorData){

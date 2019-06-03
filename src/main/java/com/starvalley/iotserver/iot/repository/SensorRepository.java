@@ -14,5 +14,5 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
     Optional<Sensor> findByName(String name);
 
     Collection<Sensor> findByCode(String code);
-    Optional<Sensor> findOne(Long id);
+    Optional<Sensor> findById(Long id);
 }

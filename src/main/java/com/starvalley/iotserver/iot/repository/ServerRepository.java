@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ServerRepository extends JpaRepository<Server, Long> {
 
-    Optional<Server> findOne(Long id);
+    Optional<Server> findById(Long id);
 }

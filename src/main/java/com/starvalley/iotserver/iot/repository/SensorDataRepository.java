@@ -11,5 +11,5 @@ import java.util.Optional;
  */
 public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
     Collection<SensorData> findBySensorName(String name);
-    Optional<SensorData> findOne(Long id);
+    Optional<SensorData> findById(Long id);
 }

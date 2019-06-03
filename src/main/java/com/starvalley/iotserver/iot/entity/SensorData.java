@@ -24,12 +24,6 @@ public class SensorData {
 
     private Long value;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    @NotBlank
-    Date createdAt;
-
-
     public Long getId() {
         return Id;
     }
@@ -44,14 +38,6 @@ public class SensorData {
 
     public void setValue(Long value) {
         this.value = value;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date date) {
-        this.createdAt = createdAt;
     }
 
     public Sensor getSensor() {

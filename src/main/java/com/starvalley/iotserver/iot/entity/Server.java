@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@EntityListeners(AuditingEntityListener.class)
+@Entity
 public class Server {
 
     @Id
@@ -17,12 +17,6 @@ public class Server {
     @NotBlank
     String name;
     String description;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    @NotBlank
-    Date createdAt;
-
 
     public Long getId() {
         return id;
@@ -48,11 +42,4 @@ public class Server {
         this.description = description;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 }

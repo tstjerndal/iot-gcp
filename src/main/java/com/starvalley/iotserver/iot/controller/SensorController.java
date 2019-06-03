@@ -29,7 +29,7 @@ public class SensorController {
 
     @GetMapping("{/id}")
     public ResponseEntity<Sensor> getSensorById (@PathVariable(value = "id") Long sensorId){
-        Optional optionalSensor = sensorDAO.findOne(sensorId);
+        Optional optionalSensor = sensorDAO.findById(sensorId);
 
         if (!optionalSensor.isPresent()){
             return ResponseEntity.notFound().build();
@@ -56,7 +56,7 @@ public class SensorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Sensor> deleteSensor (@PathVariable  (value = "id") Long sensorId){
-        Optional optionalSensor = sensorDAO.findOne(sensorId);
+        Optional optionalSensor = sensorDAO.findById(sensorId);
 
         if (!optionalSensor.isPresent()){
             return ResponseEntity.notFound().build();
