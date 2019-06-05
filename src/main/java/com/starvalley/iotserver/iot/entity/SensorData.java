@@ -11,8 +11,8 @@ import java.util.Date;
  * Created by tommy on 2018-04-07.
  * Get the senssor info
  */
-@Entity
 
+@Entity
 public class SensorData extends AuditModel {
     @Id
     @GeneratedValue

@@ -1,8 +1,10 @@
 package com.starvalley.iotserver.iot.controller;
 
 import com.starvalley.iotserver.iot.dao.SensorDAO;
+import com.starvalley.iotserver.iot.dao.ServerDAO;
 import com.starvalley.iotserver.iot.entity.Sensor;
 import com.starvalley.iotserver.iot.entity.SensorData;
+import com.starvalley.iotserver.iot.entity.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +13,26 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/sensor/{code}")
+//@RequestMapping("/sensor/{code}")
 public class SensorController {
 
     @Autowired
     SensorDAO sensorDAO;
 
-    @PostMapping("/")
-    public Sensor createSensor(@Valid @RequestBody Sensor sensor){
+    @Autowired
+    ServerDAO serverDAO;
+
+    @PostMapping("/server/{serverid}/sensor")
+    public Sensor createSensor(@PathVariable(value = "serverid") Long serverid, @Valid @RequestBody Sensor sensor){
+        Optional<Server> optionalServer = serverDAO.findById(serverid);
+        Server server;
+        if(!optionalServer.isPresent()){
+            return null;
+        } else {
+            server = optionalServer.get();
+        }
+        sensor.setServer(server);
+
         return sensorDAO.save(sensor);
     }
 
@@ -42,10 +56,11 @@ public class SensorController {
     @PutMapping("/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable (value = "id") Long sensorId, @Valid @RequestBody Sensor sensornewValues){
         Optional<Sensor> sensor = sensorDAO.find(sensorId);
-        if (sensor == null){
+        if (!sensor.isPresent()){
             return ResponseEntity.notFound().build();
         } else {
-            Sensor updateSensor = sensor.get();
+            Sensor updateSensor;
+            updateSensor = sensor.get();
             updateSensor.setName(sensornewValues.getName());
             updateSensor.setDescription(sensornewValues.getDescription());
 

@@ -1,9 +1,8 @@
-/**
- * Created by tommy on 2018-04-07.
- */
 package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 import javax.persistence.*;
@@ -24,9 +23,15 @@ public class Sensor  extends AuditModel{
 
     private String description;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "sensor")
     private Set<SensorData> sensorDatas = new HashSet<>();
+*/
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "server_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Server server;
 
     public String getDescription() {
         return description;
@@ -39,6 +44,7 @@ public class Sensor  extends AuditModel{
     public Long getId() {
         return id;
     }
+
 
     public String getCode() {
         return code;
@@ -56,12 +62,25 @@ public class Sensor  extends AuditModel{
         this.name = name;
     }
 
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+
+    /*
     public Set<SensorData> getSensorDatas() {
+
         return sensorDatas;
     }
 
     public void setSensorDatas(Set<SensorData> sensorDatas) {
         this.sensorDatas = sensorDatas;
     }
+    */
+
 
 }
