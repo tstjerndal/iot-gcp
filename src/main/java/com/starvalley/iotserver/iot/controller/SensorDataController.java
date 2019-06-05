@@ -1,10 +1,9 @@
 package com.starvalley.iotserver.iot.controller;
 
+import com.starvalley.iotserver.iot.dao.SensorDAO;
 import com.starvalley.iotserver.iot.dao.SensorDataDAO;
 import com.starvalley.iotserver.iot.entity.Sensor;
 import com.starvalley.iotserver.iot.entity.SensorData;
-import com.starvalley.iotserver.iot.repository.SensorDataRepository;
-import com.starvalley.iotserver.iot.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,22 +20,39 @@ import java.util.Optional;
  * Created by tommy on 2018-04-10.
  */
 @RestController
-@RequestMapping("/{name}/sensorData")
+//@RequestMapping("/{name}/sensorData")
 class SensorDataController {
     @Autowired
     SensorDataDAO sensorDataDAO;
 
-    @PostMapping("/")
-    public SensorData createSensorData(@Valid @RequestBody SensorData sensorData){
+    @Autowired
+    SensorDAO sensorDAO;
+
+    @PostMapping("/server/{serverid}/sensor/{sensorid}/sensorData")
+    public SensorData createSensorData(@PathVariable(value = "sensorid") Long sensorid,@Valid @RequestBody SensorData sensorData){
+        Optional<Sensor> optionalSensor = sensorDAO.findById(sensorid);
+        Sensor sensor;
+        if(!optionalSensor.isPresent()){
+            return null;
+        } else {
+            sensor = optionalSensor.get();
+        }
+        sensorData.setSensor(sensor);
         return sensorDataDAO.save(sensorData);
     }
 
-    @GetMapping("")
+/*
+    @GetMapping("/server/{serverid}/sensor/{sensorid}/sensorData")
     public List<SensorData> getAllSensorDatas (){
         return sensorDataDAO.findAll();
     }
+*/
+    @GetMapping("/server/{serverid}/sensor/{sensorid}/sensorData")
+    public List<SensorData> getAllSensorDatasForSensor (@PathVariable(value = "serverid")Long serverid, @PathVariable(value = "sensorid") Long sensorId){
+        return sensorDataDAO.findBySensorId(sensorId);
+    }
 
-    @GetMapping("{/id}")
+    @GetMapping("/server/{serverid}/sensor/{sensorid}/sensorData/{id}")
     public ResponseEntity<SensorData> getSensorDataById (@PathVariable(value = "id") Long sensorDataId){
         Optional optionalSensorData = sensorDataDAO.findById(sensorDataId);
 

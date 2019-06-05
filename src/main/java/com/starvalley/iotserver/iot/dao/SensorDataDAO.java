@@ -30,6 +30,7 @@ public class SensorDataDAO {
     public Optional<SensorData> findById(Long id){
         return sensorDataRepository.findById(id);
     }
+    public List<SensorData> findBySensorId(Long sensorId){return sensorDataRepository.findBySensorId(sensorId);}
 
     public void delete(SensorData sensorData){
         sensorDataRepository.delete(sensorData);

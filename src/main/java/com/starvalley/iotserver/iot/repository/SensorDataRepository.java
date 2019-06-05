@@ -4,6 +4,7 @@ import com.starvalley.iotserver.iot.entity.SensorData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,4 +13,5 @@ import java.util.Optional;
 public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
     Collection<SensorData> findBySensorName(String name);
     Optional<SensorData> findById(Long id);
+    List<SensorData> findBySensorId(Long postId);
 }

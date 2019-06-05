@@ -1,6 +1,8 @@
 package com.starvalley.iotserver.iot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -18,8 +20,10 @@ public class SensorData extends AuditModel {
     @GeneratedValue
     private Long Id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sensor_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    @ManyToOne
     private Sensor sensor;
 
     private Long value;

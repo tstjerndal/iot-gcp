@@ -36,12 +36,12 @@ public class SensorController {
         return sensorDAO.save(sensor);
     }
 
-    @GetMapping("")
+    @GetMapping("/server/{serverid}/sensor")
     public List<Sensor> getAllSensors (){
         return sensorDAO.findAll();
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("{/server/{serverid}/sensor/id}")
     public ResponseEntity<Sensor> getSensorById (@PathVariable(value = "id") Long sensorId){
         Optional optionalSensor = sensorDAO.findById(sensorId);
 
@@ -53,7 +53,7 @@ public class SensorController {
         }
 
     }
-    @PutMapping("/{id}")
+    @PutMapping("/server/{serverid}/sensor/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable (value = "id") Long sensorId, @Valid @RequestBody Sensor sensornewValues){
         Optional<Sensor> sensor = sensorDAO.find(sensorId);
         if (!sensor.isPresent()){
@@ -69,7 +69,7 @@ public class SensorController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/server/{serverid}/sensor/{id}")
     public ResponseEntity<Sensor> deleteSensor (@PathVariable  (value = "id") Long sensorId){
         Optional optionalSensor = sensorDAO.findById(sensorId);
 
