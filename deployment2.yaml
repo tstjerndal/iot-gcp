@@ -32,7 +32,7 @@ spec:
               - /cloud_sql_proxy
               - -dir=/cloudsql
               - -instances=iot-starvalley-server:europe-west1:iot-db=tcp:3306
-              - -credential_file=/credentials/credentials.json
+              - -credential_file=/secret/credentials.json
               - term_timeout=10s
           lifecycle:
             preStop:
@@ -43,3 +43,11 @@ spec:
           ports:
             - name: port-iot-db
               containerPort: 3306
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: "/secret"
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
