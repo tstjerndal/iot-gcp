@@ -1,34 +1,49 @@
 apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
-  name: spring-boot-deployment
+  name: iot-java-deployment
 spec:
   selector:
     matchLabels:
-      app: spring-boot-app
-  replicas: 1 # tells deployment to run 3 pods matching the template
+      app: iot-java-app
+  replicas: 2 # tells deployment to run 3 pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
-        app: spring-boot-app
+        app: iot-java-app
     spec:
       containers:
-      - name: spring-boot-app
+      - name: iot-java
         image: gcr.io/iot-starvalley-server/iot-java:v1
         ports:
         - containerPort: 8080
           name: server
         - containerPort: 8081
           name: management
-- name: cloudsql-proxy
-  image: gcr.io/cloudsql-docker/gce-proxy:1.11
-  command: ["/cloud_sql_proxy",
-            "-instances=<INSTANCE_CONNECTION_NAME>=tcp:5432",
-            "-credential_file=/secrets/cloudsql/credentials.json"]
-  securityContext:
-    runAsUser: 2  # non-root user
-    allowPrivilegeEscalation: false
-  volumeMounts:
-    - name: cloudsql-instance-credentials
-      mountPath: /secrets/cloudsql
-      readOnly: true
+
+
+        # Make sure to specify image tag in production
+        # Check out the newest version in release page
+        # https://github.com/GoogleCloudPlatform/cloudsql-proxy/releases
+      - image: b.gcr.io/cloudsql-docker/gce-proxy:latest
+        # 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+        name: cloudsqlproxy
+        imagePullPolicy: Always
+
+        command:
+          - /cloud_sql_proxy
+          - -dir=/cloudsql
+          - -instances=iot-starvalley-server:europe-west1:iot-db=tcp:3306
+          - -credential_file=/credentials/credentials.json
+          # set term_timeout if require graceful handling of shutdown
+          # NOTE: proxy will stop accepting new connections; only wait on existing connections
+          - term_timeout=10s
+        lifecycle:
+          preStop:
+            exec:
+              # (optional) add a preStop hook so that termination is delayed
+              # this is required if your server still require new connections (e.g., connection pools)
+              command: ['sleep', '10']
+        ports:
+          - name: port-iot-db
+            containerPort: 3306

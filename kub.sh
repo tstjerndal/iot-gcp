@@ -1,4 +1,4 @@
-gcloud container clusters create iot-cluster --num-nodes 2 --machine-type n1-standard-1 --zone europe-west1-b
+gcloud container clusters create iot-cluster --num-nodes 1 --machine-type n1-standard-1 --zone europe-west1-b
 gcloud container clusters get-credentials iot-cluster --region europe-west1-b
 kubectl run iot-java --image=gcr.io/iot-starvalley-server/iot-java:v1 --port 8080
 kubectl expose deployment iot-java --type=LoadBalancer

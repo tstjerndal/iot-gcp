@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: iot-java
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: iot-java
+        tier: backend
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+      containers:
+        - name: iot-java
+          image: gcr.io/iot-starvalley-server/iot-java:v1
+          ports:
+            - containerPort: 8080
+              name: server
+            - containerPort: 8081
+              name: management
+
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:latest
+          imagePullPolicy: Always
+          command:
+              - /cloud_sql_proxy
+              - -dir=/cloudsql
+              - -instances=iot-starvalley-server:europe-west1:iot-db=tcp:3306
+              - -credential_file=/credentials/credentials.json
+              - term_timeout=10s
+          lifecycle:
+            preStop:
+              exec:
+                  # (optional) add a preStop hook so that termination is delayed
+                  # this is required if your server still require new connections (e.g., connection pools)
+                command: ['sleep', '10']
+          ports:
+            - name: port-iot-db
+              containerPort: 3306
