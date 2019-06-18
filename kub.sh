@@ -1,3 +1,11 @@
+gcloud auth login
+gcloud config set project iot-starvalley-server
+./mvnw -DskipTests com.google.cloud.tools:jib-maven-plugin:build  -Dimage=gcr.io/iot-starvalley-server/iot-java:latest
+
+mvn clean install -Ddocker
+./mvnw -DskipTests com.google.cloud.tools:jib-maven-plugin:build  -Dimage=gcr.io/starvalley-iot/hello-java:latest
+
+
 gcloud container clusters create iot-cluster --num-nodes 1 --machine-type n1-standard-1 --zone europe-west1-b
 gcloud container clusters get-credentials iot-cluster --region europe-west1-b
 
@@ -22,4 +30,5 @@ kubectl delete deployment.apps/iot-java
 
 kubectl logs deployment.apps/iot-java -c iot-java
 
-
+gcloud auth login
+gcloud container clusters get-credentials iot-cluster --zone europe-west1-b --project iot-starvalley-server
