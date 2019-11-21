@@ -15,8 +15,13 @@ public class Server extends AuditModel{
     Long id;
 
     @NotBlank
+    String code;
     String name;
     String description;
+    String location;
+    String imageUrl;
+    boolean isFavorite = false;
+
 
     public Long getId() {
         return id;
@@ -30,6 +35,38 @@ public class Server extends AuditModel{
         return name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -41,5 +78,6 @@ public class Server extends AuditModel{
     public void setDescription(String description) {
         this.description = description;
     }
+
 
 }
