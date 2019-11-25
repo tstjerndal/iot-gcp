@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/sensor")
 //@RequestMapping("/sensor/{code}")
 public class SensorController {
 
@@ -36,7 +37,7 @@ public class SensorController {
         return sensorDAO.save(sensor);
     }
 
-    @GetMapping("/server/{serverid}/sensor")
+    @GetMapping("")
     public List<Sensor> getAllSensors (){
         return sensorDAO.findAll();
     }
