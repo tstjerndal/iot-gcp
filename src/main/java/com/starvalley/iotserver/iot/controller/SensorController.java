@@ -23,7 +23,7 @@ public class SensorController {
     @Autowired
     ServerDAO serverDAO;
 
-    @PostMapping("/server/{serverid}/sensor")
+    @PostMapping("/server/{serverid}")
     public Sensor createSensor(@PathVariable(value = "serverid") Long serverid, @Valid @RequestBody Sensor sensor){
         Optional<Server> optionalServer = serverDAO.findById(serverid);
         Server server;

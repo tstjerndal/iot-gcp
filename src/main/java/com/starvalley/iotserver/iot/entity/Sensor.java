@@ -1,6 +1,6 @@
 package com.starvalley.iotserver.iot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,14 +23,18 @@ public class Sensor  extends AuditModel{
 
     private String description;
 
+    String imageUrl;
+
     /*@JsonIgnore
     @OneToMany(mappedBy = "sensor")
     private Set<SensorData> sensorDatas = new HashSet<>();
 */
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "server_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    @JsonProperty("server_id")
     private Server server;
 
     public String getDescription() {
@@ -70,6 +74,13 @@ public class Sensor  extends AuditModel{
         this.server = server;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     /*
     public Set<SensorData> getSensorDatas() {
