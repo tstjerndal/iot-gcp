@@ -70,7 +70,7 @@ public class SensorController {
         }
     }
 
-    @DeleteMapping("/server/{serverid}/sensor/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Sensor> deleteSensor (@PathVariable  (value = "id") Long sensorId){
         Optional optionalSensor = sensorDAO.findById(sensorId);
 
