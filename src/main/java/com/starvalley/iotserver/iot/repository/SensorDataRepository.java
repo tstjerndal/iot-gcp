@@ -14,4 +14,5 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
     Collection<SensorData> findBySensorName(String name);
     Optional<SensorData> findById(Long id);
     List<SensorData> findBySensorId(Long postId);
+    List<SensorData> findBySensorIdOrderByCreatedAtAsc(Long postId);
 }

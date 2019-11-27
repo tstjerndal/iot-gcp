@@ -26,7 +26,7 @@ public class SensorData extends AuditModel {
     @JsonIgnore
     private Sensor sensor;
 
-    private Long value;
+    private double value;
 
     public Long getId() {
         return Id;
@@ -36,11 +36,11 @@ public class SensorData extends AuditModel {
         Id = id;
     }
 
-    public Long getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

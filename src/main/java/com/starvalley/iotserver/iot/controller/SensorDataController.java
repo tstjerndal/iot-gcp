@@ -48,8 +48,9 @@ class SensorDataController {
     }
 */
     @GetMapping("/sensorData/{sensorid}")
-    public List<SensorData> getAllSensorDatasForSensor (@PathVariable(value = "serverid")Long serverid, @PathVariable(value = "sensorid") Long sensorId){
-        return sensorDataDAO.findBySensorId(sensorId);
+    public List<SensorData> getAllSensorDatasForSensor (@PathVariable(value = "sensorid") Long sensorId){
+        System.out.println("sensorId = " + sensorId.toString());
+        return sensorDataDAO.findBySensorIdOrderByCreatedAtAsc(sensorId);
     }
 
     @GetMapping("/server/{serverid}/sensor/{sensorid}/sensorData/{id}")

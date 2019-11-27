@@ -31,6 +31,7 @@ public class SensorDataDAO {
         return sensorDataRepository.findById(id);
     }
     public List<SensorData> findBySensorId(Long sensorId){return sensorDataRepository.findBySensorId(sensorId);}
+    public List<SensorData> findBySensorIdOrderByCreatedAtAsc(Long sensorId){return sensorDataRepository.findBySensorIdOrderByCreatedAtAsc(sensorId);}
 
     public void delete(SensorData sensorData){
         sensorDataRepository.delete(sensorData);
