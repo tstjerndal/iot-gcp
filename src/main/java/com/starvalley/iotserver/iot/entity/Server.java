@@ -59,7 +59,7 @@ public class Server extends AuditModel{
         this.imageUrl = imageUrl;
     }
 
-    public boolean isFavorite() {
+    public boolean getIesFavorite() {
         return isFavorite;
     }
 

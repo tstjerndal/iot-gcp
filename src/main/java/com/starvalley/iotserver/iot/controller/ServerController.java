@@ -48,6 +48,25 @@ public class ServerController {
             Server updateServer = server.get();
             updateServer.setName(servernewValues.getName());
             updateServer.setDescription(servernewValues.getDescription());
+            updateServer.setCode(servernewValues.getCode());
+            updateServer.setFavorite(servernewValues.getIesFavorite());
+            updateServer.setImageUrl(servernewValues.getImageUrl());
+            updateServer.setLocation( servernewValues.getLocation());
+
+
+            serverDAO.save(updateServer);
+            return ResponseEntity.ok().body(updateServer);
+        }
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Server> patchServer(@PathVariable (value = "id") Long serverId, @Valid @RequestBody Server servernewValues){
+        Optional<Server> server = serverDAO.find(serverId);
+        if (server == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            Server updateServer = server.get();
+            updateServer.setName(servernewValues.getName());
+            updateServer.setDescription(servernewValues.getDescription());
 
             serverDAO.save(updateServer);
             return ResponseEntity.ok().body(updateServer);
