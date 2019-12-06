@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource(name = "userService")
-    private AppUserDao userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Override
     @Bean

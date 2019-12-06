@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/sensor")
+
 //@RequestMapping("/sensor/{code}")
 public class SensorController {
 
