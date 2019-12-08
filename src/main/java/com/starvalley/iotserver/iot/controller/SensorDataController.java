@@ -20,7 +20,7 @@ import java.util.Optional;
  * Created by tommy on 2018-04-10.
  */
 @RestController
-//@RequestMapping("/{name}/sensorData")
+@RequestMapping("/rest")
 class SensorDataController {
     @Autowired
     SensorDataDAO sensorDataDAO;
