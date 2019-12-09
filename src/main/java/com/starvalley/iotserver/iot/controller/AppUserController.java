@@ -45,4 +45,19 @@ public class AppUserController {
         }
     }
 
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public ResponseEntity<AppUser> get(@PathVariable(value = "username") String username){
+
+        Optional optionalAppUser = appUserDao.findByUsername(username);
+
+        if (!optionalAppUser.isPresent()){
+            return ResponseEntity.notFound().build();
+        } else {
+            AppUser appUser;
+            appUser = (AppUser) optionalAppUser.get();
+
+            return ResponseEntity.ok().body(appUser);
+        }
+    }
+
 }
